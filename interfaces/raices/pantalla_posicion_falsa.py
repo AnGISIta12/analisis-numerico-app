@@ -2,9 +2,10 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-import sympy as sp
 
 from algoritmos.raices.posicion_falsa import resolver_posicion_falsa
+from interfaces.notacion import texto_a_latex
+from interfaces.raices.entrada_funcion import pedir_funcion
 
 
 def mostrar():
@@ -12,8 +13,7 @@ def mostrar():
     st.caption("Como bisección, pero el nuevo punto es donde la recta entre "
                "(a, f(a)) y (b, f(b)) corta el eje x.")
 
-    texto = st.text_input("f(x)", value="x**3 - x - 2",
-                          help="Usa x como variable. Ej: sin(x) - x/2, exp(x) - 3, x^2 - 4")
+    texto = pedir_funcion("f(x)", "x^3 - x - 2", clave="f_posicion_falsa")
 
     col1, col2 = st.columns(2)
     a = col1.number_input("a", value=1.0, format="%.4f")
@@ -41,7 +41,7 @@ def mostrar():
     m1.metric("Iteraciones", r["iteraciones"])
     m2.metric("f(raíz)", f"{r['f_raiz']:.2e}")
 
-    st.latex(f"f(x) = {sp.latex(r['expresion'])}")
+    st.latex(f"f(x) = {texto_a_latex(texto)[0]}")  # tal cual se escribió
 
     xs = np.linspace(a, b, 300)
     ys = np.broadcast_to(r["f"](xs), xs.shape)

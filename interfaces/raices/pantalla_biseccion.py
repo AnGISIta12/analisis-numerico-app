@@ -5,17 +5,17 @@ Solo pide datos y muestra resultados; el cálculo lo hace algoritmos/biseccion.p
 import numpy as np
 import pandas as pd
 import streamlit as st
-import sympy as sp
 
 from algoritmos.raices.biseccion import resolver_biseccion
+from interfaces.notacion import texto_a_latex
+from interfaces.raices.entrada_funcion import pedir_funcion
 
 
 def mostrar():
     st.header("Método de bisección")
     st.caption("Encuentra una raíz de f(x) en un intervalo donde f cambia de signo.")
 
-    texto = st.text_input("f(x)", value="x**3 - x - 2",
-                          help="Usa x como variable. Ej: sin(x) - x/2, exp(x) - 3, x^2 - 4")
+    texto = pedir_funcion("f(x)", "x^3 - x - 2", clave="f_biseccion")
 
     col1, col2 = st.columns(2)
     a = col1.number_input("a", value=1.0, format="%.4f")
@@ -43,7 +43,7 @@ def mostrar():
     m1.metric("Iteraciones", r["iteraciones"])
     m2.metric("f(raíz)", f"{r['f_raiz']:.2e}")
 
-    st.latex(f"f(x) = {sp.latex(r['expresion'])}")
+    st.latex(f"f(x) = {texto_a_latex(texto)[0]}")  # tal cual se escribió
 
     # Gráfica de f en el intervalo, junto con el eje y = 0
     xs = np.linspace(a, b, 300)

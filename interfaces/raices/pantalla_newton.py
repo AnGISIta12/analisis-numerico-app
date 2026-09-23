@@ -5,6 +5,8 @@ import streamlit as st
 import sympy as sp
 
 from algoritmos.raices.newton import resolver_newton
+from interfaces.notacion import texto_a_latex
+from interfaces.raices.entrada_funcion import pedir_funcion
 
 
 def mostrar():
@@ -12,8 +14,7 @@ def mostrar():
     st.caption("Usa la recta tangente: x₍ₙ₊₁₎ = xₙ − f(xₙ) / f'(xₙ). "
                "La derivada se calcula automáticamente.")
 
-    texto = st.text_input("f(x)", value="x**3 - x - 2",
-                          help="Usa x como variable. Ej: sin(x) - x/2, exp(x) - 3, x^2 - 4")
+    texto = pedir_funcion("f(x)", "x^3 - x - 2", clave="f_newton")
 
     x0 = st.number_input("x₀ (valor inicial)", value=1.5, format="%.4f")
 
@@ -39,7 +40,7 @@ def mostrar():
     m1.metric("Iteraciones", r["iteraciones"])
     m2.metric("f(raíz)", f"{r['f_raiz']:.2e}")
 
-    st.latex(f"f(x) = {sp.latex(r['expresion'])}")
+    st.latex(f"f(x) = {texto_a_latex(texto)[0]}")  # tal cual se escribió
     st.latex(f"f'(x) = {sp.latex(r['derivada'])}")
 
     ancho = max(1.0, abs(r["raiz"] - x0) * 1.5)

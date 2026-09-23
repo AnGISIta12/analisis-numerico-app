@@ -2,9 +2,10 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-import sympy as sp
 
 from algoritmos.raices.secante import resolver_secante
+from interfaces.notacion import texto_a_latex
+from interfaces.raices.entrada_funcion import pedir_funcion
 
 
 def mostrar():
@@ -12,8 +13,7 @@ def mostrar():
     st.caption("Como Newton, pero cambia la derivada por la pendiente entre "
                "los dos últimos puntos. No necesita que encierren la raíz.")
 
-    texto = st.text_input("f(x)", value="x**3 - x - 2",
-                          help="Usa x como variable. Ej: sin(x) - x/2, exp(x) - 3, x^2 - 4")
+    texto = pedir_funcion("f(x)", "x^3 - x - 2", clave="f_secante")
 
     col1, col2 = st.columns(2)
     x0 = col1.number_input("x₀", value=1.0, format="%.4f")
@@ -41,7 +41,7 @@ def mostrar():
     m1.metric("Iteraciones", r["iteraciones"])
     m2.metric("f(raíz)", f"{r['f_raiz']:.2e}")
 
-    st.latex(f"f(x) = {sp.latex(r['expresion'])}")
+    st.latex(f"f(x) = {texto_a_latex(texto)[0]}")  # tal cual se escribió
 
     izq = min(x0, x1, r["raiz"]) - 0.5
     der = max(x0, x1, r["raiz"]) + 0.5

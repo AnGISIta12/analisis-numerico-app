@@ -7,7 +7,8 @@ Estructura:
 
     main.py                          # conecta todo y arranca la app
     algoritmos/                      # lógica pura (sin interfaz)
-      funciones.py                   # texto -> función y derivada (sympy)
+      funciones.py                   # texto -> función y derivada (sympy);
+                                     # acepta 2x, x^2, sen, ln, π, √ ...
       raices/
         biseccion.py                 # scipy.optimize.bisect
         posicion_falsa.py            # a mano (SciPy no lo trae)
@@ -22,9 +23,13 @@ Estructura:
         gauss_seidel.py              # a mano (NumPy/SciPy no lo traen)
     interfaces/                      # pantallas; solo llaman a algoritmos/
       barra_lateral.py               # unidad -> método (compartida)
-      raices/pantalla_<metodo>.py
+      notacion.py                    # texto -> LaTeX tal cual se escribe (con cursor y □)
+      teclado.py                     # teclado matemático con cursor (raíces y sistemas)
+      raices/
+        entrada_funcion.py           # f(x) con el teclado y vista previa
+        pantalla_<metodo>.py
       sistemas_lineales/
-        componentes.py               # tabla para A|b y cómo mostrar matrices
+        componentes.py               # celdas de A|b con el teclado y cómo mostrar matrices
         pantalla_<metodo>.py
 
 Para agregar un método: crea `algoritmos/<unidad>/<metodo>.py` y

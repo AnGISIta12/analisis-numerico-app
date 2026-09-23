@@ -5,6 +5,8 @@ import streamlit as st
 import sympy as sp
 
 from algoritmos.raices.punto_fijo import resolver_punto_fijo
+from interfaces.notacion import texto_a_latex
+from interfaces.raices.entrada_funcion import pedir_funcion
 
 
 def mostrar():
@@ -12,9 +14,7 @@ def mostrar():
     st.caption("Reescribe f(x) = 0 como x = g(x) e itera x₍ₙ₊₁₎ = g(xₙ). "
                "Converge si |g'(x)| < 1 cerca de la raíz.")
 
-    texto = st.text_input("g(x)", value="(x + 2)**(1/3)",
-                          help="Escribe el despeje x = g(x). Ej: para x³ − x − 2 = 0, "
-                               "g(x) = (x + 2)**(1/3)")
+    texto = pedir_funcion("g(x)", "(x + 2)^(1/3)", clave="g_punto_fijo")
 
     x0 = st.number_input("x₀ (valor inicial)", value=1.0, format="%.4f")
 
@@ -37,7 +37,7 @@ def mostrar():
     m1.metric("g(x*) − x*", f"{r['g_raiz'] - r['raiz']:.2e}")
     m2.metric("|g'(x*)|", f"{abs(r['dg_raiz']):.4f}")
 
-    st.latex(f"g(x) = {sp.latex(r['expresion'])}")
+    st.latex(f"g(x) = {texto_a_latex(texto)[0]}")  # tal cual se escribió
     st.latex(f"g'(x) = {sp.latex(r['derivada'])}")
 
     # g(x) contra y = x: el punto fijo es donde se cruzan
